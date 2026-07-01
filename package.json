@@ -1,0 +1,21 @@
+{
+  "name": "proyecto5-nosql",
+  "version": "1.0.0",
+  "description": "API REST Movies con MongoDB - Proyecto 5 noSQL",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Diego Couto Cabezas",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
