@@ -42,6 +42,42 @@ const getMovieById = async (req, res) => {
   }
 };
 
+// ── GET /api/movies/title/:title ─────────────────────────────
+// Busca películas cuyo título contenga el texto (sin distinguir mayúsculas)
+const getMoviesByTitle = async (req, res) => {
+  try {
+    // Escapamos caracteres especiales de regex (por ejemplo "Se7en (1995)")
+    const escaped = req.params.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const movies = await Movie.find({ title: new RegExp(escaped, "i") });
+
+    if (movies.length === 0) {
+      return res.status(404).json({ success: false, error: "No se encontraron películas con ese título" });
+    }
+
+    res.status(200).json({ success: true, total: movies.length, data: movies });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// ── GET /api/movies/year/:year ───────────────────────────────
+// Devuelve las películas posteriores al año indicado ($gt)
+const getMoviesByYear = async (req, res) => {
+  try {
+    const year = Number(req.params.year);
+
+    if (Number.isNaN(year)) {
+      return res.status(400).json({ success: false, error: "El año debe ser un número" });
+    }
+
+    const movies = await Movie.find({ year: { $gt: year } }).sort({ year: 1 });
+
+    res.status(200).json({ success: true, total: movies.length, data: movies });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 // ── POST /api/movies ─────────────────────────────────────────
 // Crea una nueva película
 const createMovie = async (req, res) => {
@@ -122,6 +158,8 @@ const deleteMovie = async (req, res) => {
 module.exports = {
   getAllMovies,
   getMovieById,
+  getMoviesByTitle,
+  getMoviesByYear,
   createMovie,
   updateMovie,
   deleteMovie,

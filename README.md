@@ -16,6 +16,9 @@ proyecto5-noSQL/
 │   │   └── movie.model.js        # Schema de Mongoose para Movie
 │   └── routes/
 │       └── movie.routes.js       # Definición de rutas de la API
+├── seeds/
+│   └── movies.seed.js            # Carga las películas iniciales en la base
+├── capturas/                     # Capturas de Postman/Insomnia
 ├── index.js                      # Entrada: Express + conexión MongoDB
 ├── .env.example                  # Variables de entorno de ejemplo
 ├── .gitignore
@@ -52,7 +55,15 @@ MONGODB_URI=mongodb+srv://USUARIO:PASSWORD@cluster0.xxxxx.mongodb.net/moviesDB?r
 > **¿Cómo obtener la URI de Atlas?**  
 > MongoDB Atlas → Tu cluster → Connect → Drivers → copia la connection string.
 
-### 3. Arranca el servidor
+### 3. Carga los datos iniciales (semilla)
+
+```bash
+npm run seed
+```
+
+Borra la colección `movies` e inserta las películas de `seeds/movies.seed.js`.
+
+### 4. Arranca el servidor
 
 ```bash
 # Modo desarrollo (recarga automática con nodemon)
@@ -76,6 +87,8 @@ Servidor corriendo en http://localhost:3000
 |--------|-----|-------------|
 | GET | `/api/movies` | Obtener todas las películas |
 | GET | `/api/movies?genre=Terror` | Filtrar por género |
+| GET | `/api/movies/title/:title` | Buscar por título (parcial, sin distinguir mayúsculas) |
+| GET | `/api/movies/year/:year` | Películas posteriores al año indicado |
 | GET | `/api/movies/:id` | Obtener una película por ID |
 | POST | `/api/movies` | Crear una nueva película |
 | PUT | `/api/movies/:id` | Actualizar una película |
@@ -226,6 +239,12 @@ DELETE http://localhost:3000/api/movies/665f1a2b3c4d5e6f7a8b9c0d
   "message": "Película \"Inception\" eliminada correctamente"
 }
 ```
+
+---
+
+## Pruebas
+
+Las capturas de Postman/Insomnia con todas las llamadas (arranque, semilla, GET, búsquedas, POST, PUT y DELETE, incluidos los casos de error) están en la carpeta [`capturas/`](./capturas).
 
 ---
 
